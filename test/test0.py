@@ -32,6 +32,12 @@ class Test(unittest.TestCase):
     def test_7(self):
         self.assertEquals(self.c2l.cyrl_text('Андрій Шаповалов').latn_text, 'Andrii Shapovalov')
 
+    def test_8(self):
+        self.assertEquals(self.c2l.cyrl_text('Андрій ШАПОВАЛОВ').latn_text, 'Andrii SHAPOVALOV')
+
+    def test_9(self):
+        self.assertEquals(self.c2l.cyrl_text('Андрій шаповалов').latn_text, 'Andrii shapovalov')
+
 
 if __name__ == '__main__':
     unittest.main()

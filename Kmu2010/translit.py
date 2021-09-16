@@ -76,10 +76,11 @@ class Cyrl2Latn:
                     self._lat_text.append(self.trans.translateral(None, word[l]))
                     continue
                 elif l == 1:
-                    if len(self._lat_text[-1]) > 1 and word[l].islower():
-                        first = self._lat_text[-1][0].upper()
-                        other = self._lat_text[-1][1:].lower()
-                        self._lat_text[-1] = ''.join((first, other))
+                    if len(self._lat_text[-1]) > 1:
+                        if word[l].islower() != self._lat_text[-1].islower():
+                            first = self._lat_text[-1][0].upper()
+                            other = self._lat_text[-1][1:].lower()
+                            self._lat_text[-1] = ''.join((first, other))
                     self._lat_text.append(self.trans.translateral(word[l - 1], word[l]))
                     continue
                 else:
