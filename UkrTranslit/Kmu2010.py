@@ -1,15 +1,4 @@
-from abc import ABC, abstractmethod
-
-
-class TL(ABC):
-    UKR = {}
-
-    @abstractmethod
-    def translateral(self, previous, letter):
-        return self
-
-
-class Kmu2010(TL):
+class Kmu2010:
     UKR = {
         'А': ('A', None),
         'Б': ('B', None),
@@ -46,7 +35,13 @@ class Kmu2010(TL):
         'Я': ('IA', 'YA')
     }
 
-    def translateral(self, previous, letter):
+    def translateral(self, previous: str, letter: str) -> str:
+        """
+        :rtype: object
+        :return: str
+        :param previous: str
+        :param letter: str
+        """
         if not previous:
             if letter.upper() in 'ЄЇЙЮЯ':
                 return_ = self.UKR.get(letter.upper(), (None, None))[1]
@@ -60,36 +55,3 @@ class Kmu2010(TL):
         if not return_:
             return ''
         return return_ if letter.isupper() else return_.lower()
-
-
-class Cyrl2Latn:
-    def __init__(self, method):
-        self.trans = Kmu2010()
-        self._lat_text = []
-
-    def cyrl_text(self, text):
-        self._lat_text = []
-
-        for word in text.split():
-            for l in range(len(word)):
-                if l == 0:
-                    self._lat_text.append(self.trans.translateral(None, word[l]))
-                    continue
-                elif l == 1:
-                    if len(self._lat_text[-1]) > 1:
-                        if word[l].islower() != self._lat_text[-1].islower():
-                            first = self._lat_text[-1][0].upper()
-                            other = self._lat_text[-1][1:].lower()
-                            self._lat_text[-1] = ''.join((first, other))
-                    self._lat_text.append(self.trans.translateral(word[l - 1], word[l]))
-                    continue
-                else:
-                    self._lat_text.append(self.trans.translateral(word[l - 1], word[l]))
-                    continue
-
-            self._lat_text.append(' ')
-        return self
-
-    @property
-    def latn_text(self):
-        return ''.join(self._lat_text).strip()
